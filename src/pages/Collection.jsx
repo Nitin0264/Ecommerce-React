@@ -5,10 +5,6 @@ function Collection() {
   return (
     <div className='w-[96%] mx-auto'>
      <Filter />
-     {
-      document.querySelector('.')
-     }
-
     </div>
   )
 }
