@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Title from './Title'
 import ProductItem from './ProductItem'
 import { userContext } from '../userContext/UserContext'
 
 function AllProducts() {
   const { products } = useContext(userContext)
+   let [filter,setFilter] = useState([])
+
   return (
     <div className='flex relative flex-wrap '>
       <div className='my-13 fixed'>
@@ -17,22 +19,21 @@ function AllProducts() {
 
                   <div className='flex flex-col gap-3 my-3 '>
                     <label htmlFor="Men">
-                      <input type="checkbox" name="Men" id="Men" /> Men
+                      <input type="checkbox" name="Men" value="Men" id="Men"/> Men
                     </label>
                     <label htmlFor="Women">
-                      <input type="checkbox" name="Women" id="Women" /> Women
+                      <input   type="checkbox" name="Women" value="Women" id="Women" /> Women
                     </label>
                     <label htmlFor="Kids">
-                      <input type="checkbox" name="Kids" id="Kids" /> Kids
+                      <input type="checkbox" name="Kids" value="Kids" id="Kids" /> Kids
                     </label>
                   </div>
-
         </div >
 
 
         <div className='h-[110px] w-[200px] border border-slate-200 p-2 mt-5'>
           <p className='text-2xl font-bold'>Search</p>
-          <input className='h-[30px] w-[160px] border border-slate-200 mt-2' type="text" name="Search" id="Search" placeholder='Search Products....' />
+          <input className='h-[30px] w-[160px] border border-slate-200 mt-2'  type="text" name="Search" id="Search" placeholder='Search Products....' />
         </div>
 
 
@@ -44,14 +45,14 @@ function AllProducts() {
             </div>
 
             <div className='flex flex-col gap-3 my-3'>
-              <label htmlFor="TopWear">
-                <input type="checkbox" name="TopWear" id="TopWear" /> TopWear
+              <label htmlFor="Topwear">
+                <input type="checkbox" name="Topwear" value='Topwear'  id="Topwear" /> TopWear
               </label>
-              <label htmlFor="BottomWear">
-                <input type="checkbox" name="BottomWear" id="BottomWear" /> BottomWear
+              <label htmlFor="Bottomwear">
+                <input type="checkbox" name="Bottomwear" value='Bottomwear'  id="Bottomwear" /> BottomWear
               </label>
-              <label htmlFor="WinterWear">
-                <input type="checkbox" name="WinterWear" id="WinterWear" /> WinterWear
+              <label htmlFor="Winterwear">
+                <input type="checkbox" name="Winterwear" value='Winterwear'  id="Winterwear" /> WinterWear
               </label>
             </div>
 
