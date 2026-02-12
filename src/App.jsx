@@ -11,7 +11,7 @@ function App() {
 let {name ,products} = useContext(userContext)
   console.log(products)
   return (
-    <div className ='w-[80%] mx-auto'>
+    <div className =''>
       <Navbar />
       <Routes>
            <Route path='/' element = {<Home />}   />
