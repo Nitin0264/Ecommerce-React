@@ -9,7 +9,7 @@ import Navbar from './components/Navbar'
 
 function App() {
 let {name ,products} = useContext(userContext)
-  console.log(products)
+  // console.log(products)
   return (
     <div className =''>
       <Navbar />
