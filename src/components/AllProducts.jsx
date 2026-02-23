@@ -98,6 +98,7 @@ function AllProducts() {
                 img={obj.image[0]}
                 name={obj.name}
                 price={obj.price} 
+                id={obj._id}
               />
             ))
           ) : (

@@ -6,6 +6,7 @@ import Collection from './pages/Collection'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import Navbar from './components/Navbar'
+import Product from './pages/Product'
 
 function App() {
 let {name ,products} = useContext(userContext)
@@ -16,6 +17,7 @@ let {name ,products} = useContext(userContext)
       <Routes>
            <Route path='/' element = {<Home />}   />
            <Route path ='/Collection' element ={<Collection />} />
+           <Route path ='/product/:pid' element ={<Product />} />
            <Route path = '/About' element = {<About />}  />
            <Route path = '/Contact' element = {<Contact />}  />
 
