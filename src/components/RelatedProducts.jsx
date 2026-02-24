@@ -20,7 +20,7 @@ function RelatedProducts() {
         <Title y1='Related' y2='Products' sale='These are the Best suggestion for Related Products' />
       </div>
 
-      <div className='flex gap-4 flex-wrap'>
+      <div className='flex gap-4 flex-wrap items-center justify-center'>
         {
           RelatedProducts.map((item, index) => (
             <ProductItem 
@@ -28,7 +28,7 @@ function RelatedProducts() {
               id={item._id} 
               name={item.name} 
               price={item.price} 
-              img={item.image} 
+              img={item.image[0]} 
             />
           ))
         }

@@ -1,16 +1,38 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import { products } from '../assets/frontend_assets/assets'
 
-export let userContext = createContext()
+export const userContext = createContext()
 
-function Provider({children}) {
-let name = 'Nitin'
-const obj = {
-  products,name
-}
+function Provider({ children }) {
+  const [cartItem, setCartItem] = useState({})
+
+  const addToCart = (id, size) => {
+    let cartData = structuredClone(cartItem)
+
+    if (cartData[id]) {
+      if (cartData[id][size]) {
+        cartData[id][size] += 1
+      } else {
+        cartData[id][size] = 1
+      }
+    } else {
+      cartData[id] = {}
+      cartData[id][size] = 1
+    }
+    setCartItem(cartData)
+  }
+  
+  const name = 'Nitin'
+  const obj = {
+    products,
+    name,
+    cartItem,
+    addToCart
+  }
+
   return (
-    <userContext.Provider value ={obj}>
-         {children}
+    <userContext.Provider value={obj}>
+      {children}
     </userContext.Provider>
   )
 }

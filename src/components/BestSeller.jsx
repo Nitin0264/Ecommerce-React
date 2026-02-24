@@ -26,7 +26,7 @@ function BestSeller() {
               id={item._id} 
               name={item.name} 
               price={item.price} 
-              img={item.image} 
+              img={item.image[0]} 
             />
           ))
         }

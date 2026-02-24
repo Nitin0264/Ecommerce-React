@@ -13,8 +13,16 @@ function LatestCollection() {
     </div>
     <div className = 'flex flex-wrap gap-4 items-center justify-center'>
       {
-        products.slice(0,12).map((obj,index)=>(<ProductItem className = 'flex flex-col flex-wrap gap-5'   key = {index} img={obj.image[0]} name={obj.name} price ={obj.price} />)) 
-      }
+          products.slice(12,24).map((item, index) => (
+            <ProductItem 
+              key={index} 
+              id={item._id} 
+              name={item.name} 
+              price={item.price} 
+              img={item.image[0]} 
+            />
+          ))
+        }
 
     </div>
     </div>
