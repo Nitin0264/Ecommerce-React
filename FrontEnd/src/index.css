@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+hr{
+  scale:0;
+  color:black;
+}
+.active hr{
+  scale:1;
+  transition:2s ease-in-out;
+  color:rgb(76, 76, 167);
+  height:2px;
+  background-color:rgb(76, 76, 167);
+}
+::-webkit-scrollbar
+{
+  display: none;
+}
