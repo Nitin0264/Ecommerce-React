@@ -1,5 +1,5 @@
 import React from 'react'
-import {Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Collection from './pages/Collection'
@@ -9,21 +9,27 @@ import Product from './pages/Product'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/PlaceOrder'
 
+// Import Toastify components and styles
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 function App() {
   return (
-    <div className = 'mt-2 mb-7 w-[85%] mx-auto'>
-        <Navbar />
-     <Routes>
-      <Route path = '/' element = {<Home />}  />
-      <Route path ='/Collection' element = {<Collection />} />
-      <Route path ='/products/:pid' element = {<Product />} />
-       <Route path = '/About' element = {<About />} />
-       <Route path  =  '/Contact' element = {<Contact />} />
-       <Route path='/CartItems' element={<Cart/>} />
-       <Route path ='/checkout' element= {<PlaceOrder />} />
-
+    <div className='mt-2 mb-7 w-[85%] mx-auto'>
+      {/* Global notification container popup layer */}
+      <ToastContainer position="top-right" autoClose={3000} newestOnTop />
+      
+      <Navbar />
+      
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/Collection' element={<Collection />} />
+        <Route path='/products/:pid' element={<Product />} />
+        <Route path='/About' element={<About />} />
+        <Route path='/Contact' element={<Contact />} />
+        <Route path='/CartItems' element={<Cart />} />
+        <Route path='/checkout' element={<PlaceOrder />} />
       </Routes>
-
     </div>
   )
 }
