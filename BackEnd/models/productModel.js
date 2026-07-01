@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     date: { type: Number, required: true }  // Timestamps for sorting or tracking creation
 });
 
-// If the model already exists in Mongoose's internal registry, use it; otherwise, initialize it.
+
 const productModel = mongoose.models.product || mongoose.model("product", productSchema);
 
 export default productModel;
