@@ -1,28 +1,36 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../context/UserContext'
 import { NavLink } from 'react-router-dom'
 
 function Cart() {
-  let { products, cardItem, updateQuantity, removeItem, updateSize } = useContext(userContext)
+  const { products, cardItem, updateQuantity, removeItem, updateSize } = useContext(userContext)
   const [removingId, setRemovingId] = useState(null)
+  
+  // Track flattened cart structures inside native state hooks for robust re-renders
+  const [tempdata, setTempdata] = useState([])
 
-  let tempdata = []
-  for (let id in cardItem) {
-    for (let size in cardItem[id]) {
-      if (cardItem[id][size] > 0) {
-        let product = products.find((item) => item._id === id)
-        if (product) {
-          tempdata.push({
-            _id: id,
-            size: size,
-            quantity: cardItem[id][size],
-            ...product
-          })
+  // Synchronize internal layout representations whenever items are added or database values finish loading
+  useEffect(() => {
+    let list = []
+    for (let id in cardItem) {
+      for (let size in cardItem[id]) {
+        if (cardItem[id][size] > 0) {
+          let product = products.find((item) => item._id === id)
+          if (product) {
+            list.push({
+              _id: id,
+              size: size,
+              quantity: cardItem[id][size],
+              ...product
+            })
+          }
         }
       }
     }
-  }
+    setTempdata(list)
+  }, [cardItem, products]) // Listens tightly to context updates
 
+  // Core Math Calculations
   const subTotal = tempdata.reduce((acc, pro) => acc + pro.price * pro.quantity, 0)
   const shippingFee = subTotal > 300 ? 0 : subTotal === 0 ? 0 : 10
   const total = subTotal + shippingFee
@@ -72,10 +80,10 @@ function Cart() {
             </NavLink>
           </div>
         ) : (
-          <div className="flex gap-8 items-start">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
 
             {/* ── Cart items ── */}
-            <div className="flex flex-col gap-4 flex-1">
+            <div className="flex flex-col gap-4 flex-1 w-full">
 
               {/* Free shipping banner */}
               {subTotal < 300 && (
@@ -100,7 +108,7 @@ function Cart() {
                 return (
                   <div
                     key={`${data._id}-${data.size}`}
-                    className={`bg-white border border-gray-200 rounded-xl p-5 flex gap-5 items-center transition-all duration-300 ${isRemoving ? 'opacity-0 scale-95' : 'opacity-100'}`}
+                    className={`bg-white border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row gap-5 items-center transition-all duration-300 ${isRemoving ? 'opacity-0 scale-95' : 'opacity-100'}`}
                   >
                     {/* Image */}
                     <img
@@ -110,17 +118,17 @@ function Cart() {
                     />
 
                     {/* Name + size badge */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 w-full text-center sm:text-left">
                       <h2 className="text-base font-semibold text-gray-900 truncate">{data.name}</h2>
                       <span className="inline-block mt-1 text-xs font-medium px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
                         {data.category}
                       </span>
 
-                      {/* Size & Qty — on mobile stacks, on desktop inline */}
-                      <div className="flex flex-wrap gap-4 mt-3">
+                      {/* Size & Qty Controllers */}
+                      <div className="flex flex-wrap justify-center sm:justify-start gap-4 mt-3">
 
                         {/* Size dropdown */}
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 items-start">
                           <label className="text-xs text-gray-400 font-medium">Size</label>
                           <select
                             value={data.size}
@@ -134,9 +142,9 @@ function Cart() {
                         </div>
 
                         {/* Quantity stepper */}
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 items-start">
                           <label className="text-xs text-gray-400 font-medium">Quantity</label>
-                          <div className="flex items-center border border-gray-200 rounded-md overflow-hidden">
+                          <div className="flex items-center border border-gray-200 rounded-md overflow-hidden bg-white">
                             <button
                               onClick={() => updateQuantity(data._id, data.size, Math.max(1, data.quantity - 1))}
                               className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors text-lg font-light"
@@ -158,9 +166,9 @@ function Cart() {
                       </div>
                     </div>
 
-                    {/* Price + remove */}
-                    <div className="flex flex-col items-end gap-3 flex-shrink-0">
-                      <div className="text-right">
+                    {/* Price + remove actions */}
+                    <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-3 flex-shrink-0 w-full sm:w-auto border-t sm:border-none pt-3 sm:pt-0">
+                      <div className="text-left sm:text-right">
                         <p className="text-xl font-bold text-gray-900">${(data.price * data.quantity).toFixed(2)}</p>
                         <p className="text-xs text-gray-400">${data.price} each</p>
                       </div>
@@ -183,7 +191,7 @@ function Cart() {
             </div>
 
             {/* ── Order summary (sticky) ── */}
-            <div className="w-[300px] flex-shrink-0 sticky top-6">
+            <div className="w-full lg:w-[300px] flex-shrink-0 lg:sticky lg:top-6">
               <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                 <h2 className="text-lg font-bold text-gray-900 mb-5">Order Summary</h2>
 

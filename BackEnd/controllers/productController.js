@@ -29,7 +29,6 @@ const addProduct = async (req, res) => {
             category,
             subCategory,
             price: Number(price),
-            // The sizes array usually travels as a JSON string from FormData; we convert it back to an array
             sizes: JSON.parse(sizes), 
             bestseller: bestseller === "true" ? true : false,
             image: imagesUrl,
@@ -59,4 +58,68 @@ const listProducts = async (req, res) => {
     }
 };
 
-export { addProduct, listProducts };
+// --- Function to Remove a Product ---
+const removeProduct = async (req, res) => {
+    try {
+        const { id } = req.body;
+        await productModel.findByIdAndDelete(id);
+        res.json({ success: true, message: "Product Removed Successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// --- Function to Get a Single Product's Details ---
+const singleProduct = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const product = await productModel.findById(productId);
+        res.json({ success: true, product });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// --- Function to Batch Seed Products from Old Catalog Array ---
+const seedProducts = async (req, res) => {
+    try {
+        const localProductsArray = [
+            {
+                name: "Women Round Neck Cotton Top",
+                description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+                price: 100,
+                image: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500"],
+                category: "Women",
+                subCategory: "Topwear",
+                sizes: ["S", "M", "L"],
+                bestseller: true,
+                date: Date.now()
+            },
+            {
+                name: "Girls Round Neck Cotton Top",
+                description: "A lightweight, usually knitted, pullover shirt, close-fitting and with a round neckline and short sleeves, worn as an undershirt or outer garment.",
+                price: 220,
+                image: ["https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=500"],
+                category: "Kids",
+                subCategory: "Topwear",
+                sizes: ["S", "L", "XL"],
+                bestseller: true,
+                date: Date.now()
+            }
+            // 💡 You can copy-paste your other items from assets.js directly here!
+        ];
+
+        // Bulk insert array data directly into your local MongoDB collection
+        await productModel.insertMany(localProductsArray);
+
+        res.json({ success: true, message: "Database Seeded Successfully with local products!" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+// Exporting all 5 functions required by productRoutes.js
+export { addProduct, listProducts, removeProduct, singleProduct, seedProducts };

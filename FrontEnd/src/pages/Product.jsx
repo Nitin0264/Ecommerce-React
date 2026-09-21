@@ -14,12 +14,20 @@ function Product() {
   const [added, setAdded] = useState(false)
 
   useEffect(() => {
+    // Find matching primary product details
     const product = products.find(p => p._id === pid)
     if (product) {
       setProduct1(product)
       setImage(product.image[0])
+      
+      // Dynamic Related Recommendations Filtering Logic
+      // Grab up to 4 items matching the same category, excluding the active item itself
+      const related = products
+        .filter(item => item.category === product.category && item._id !== pid)
+        .slice(0, 4)
+      setSuggestedProduct(related)
     }
-  }, [products])
+  }, [pid, products]) // Included pid here so it updates dynamically if a user clicks a suggestion
 
   const handleAddToCart = () => {
     if (!size1) return
@@ -32,7 +40,7 @@ function Product() {
     <>
       {product1 ? (
         <div>
-          <div className='flex gap-4 w-full mx-auto p-6 rounded-md'>
+          <div className='flex flex-col md:flex-row gap-4 w-full mx-auto p-6 rounded-md'>
 
             {/* Left — images */}
             <div className='flex-1'>
@@ -139,16 +147,17 @@ function Product() {
             </div>
           </div>
 
-          {/* Suggested products */}
+          {/* Suggested products section */}
           <h3 className='text-center text-gray-400 text-2xl my-10'>You may also like</h3>
-          <div className='flex gap-3 my-3 px-6'>
+          <div className='grid grid-cols-2 sm:grid-cols-4 gap-4 my-3 px-6'>
             {suggestedProduct.length > 0
               ? suggestedProduct.map((data, index) => (
-                  <div key={index}>
+                  // Wrap in Link so clicking a suggestion changes the route parameter target smoothly
+                  <Link to={`/products/${data._id}`} key={index} className="block group">
                     <ProductsDisplay image={data.image[0]} name={data.name} />
-                  </div>
+                  </Link>
                 ))
-              : null}
+              : <p className='col-span-full text-center text-sm text-gray-400'>No related items available</p>}
           </div>
         </div>
       ) : (

@@ -8,6 +8,8 @@ import Contact from './pages/Contact'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/PlaceOrder'
+import Verify from './pages/Verify' // <-- Added missing import
+import Orders from './pages/Orders' // <-- Added missing import for purchase history
 
 // Import Toastify components and styles
 import { ToastContainer } from 'react-toastify'
@@ -29,6 +31,8 @@ function App() {
         <Route path='/Contact' element={<Contact />} />
         <Route path='/CartItems' element={<Cart />} />
         <Route path='/checkout' element={<PlaceOrder />} />
+        <Route path='/verify' element={<Verify />} />
+        <Route path='/orders' element={<Orders />} /> {/* <-- Added path matching your PlaceOrder redirect */}
       </Routes>
     </div>
   )
