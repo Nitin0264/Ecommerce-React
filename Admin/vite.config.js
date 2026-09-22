@@ -6,15 +6,13 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    react()
+    react(),
+    {
+      name: 'force-exit-after-build',
+      apply: 'build',
+      closeBundle() {
+        setTimeout(() => process.exit(0), 0)
+      }
+    }
   ],
-  build: {
-    // Forces Vite to close cleanly instead of hanging in CI/CD environments
-    minify: true,
-    emptyOutDir: true,
-  },
-  // Ensures the node process terminates immediately after bundling completes
-  closeBundle() {
-    setTimeout(() => process.exit(0), 0)
-  }
 })
