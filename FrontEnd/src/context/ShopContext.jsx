@@ -1,36 +1,20 @@
-import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import { createContext, useState } from "react";
+import { products as localProducts } from "../assets/assets";
 
 export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
     const currency = '$';
     const delivery_fee = 10;
-    const backendUrl = "http://localhost:8000";
-    const [products, setProducts] = useState([]);
-
-    // Fetch products dynamically from MongoDB backend API
-    const getProductsData = async () => {
-        try {
-            const response = await axios.get(`${backendUrl}/api/product/list`);
-            if (response.data.success) {
-                setProducts(response.data.products);
-            }
-        } catch (error) {
-            console.error("Error fetching products:", error.message);
-        }
-    };
-
-    useEffect(() => {
-        getProductsData();
-    }, []);
+    
+    // Use local mock products array directly for static deployment
+    const [products, setProducts] = useState(localProducts);
 
     const value = {
         products,
         currency,
         delivery_fee,
-        backendUrl,
-        getProductsData
+        setProducts
     };
 
     return (
