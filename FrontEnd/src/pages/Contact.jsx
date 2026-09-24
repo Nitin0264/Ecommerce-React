@@ -47,7 +47,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-white text-zinc-900 overflow-x-hidden">
 
-     ```jsx
+
 {/* ================= HERO ================= */}
 <section className="relative overflow-hidden bg-white border-b border-zinc-100">
 

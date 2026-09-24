@@ -1,20 +1,17 @@
 import React, { createContext, useEffect, useState } from 'react'
+import axios from 'axios'
 import { toast } from 'react-toastify'
-// 1. Importing products directly from your assets folder structure
-import { products as localProducts } from '../assets/frontend_assets/assets'
 
 export let userContext = createContext()
 
 function Provider({ children }) {
   // --- 1. Dynamic States ---
-  // Initializing products state directly with local mock data for standalone deployment
-  const [products, setProducts] = useState(localProducts)
+  const [products, setProducts] = useState([]) // Replacing static import with live array state
   const [cardItem, setCardItem] = useState({})
   const name = 'Nitin'
-  const backendUrl = "http://localhost:8000"
+  const backendUrl = "http://localhost:8000" // Pointing to your local Express server
 
-  // --- 2. Backend Fetch Disabled for Deployment ---
-  /*
+  // --- 2. Fetch Live Products From Backend API ---
   const getProductsData = async () => {
     try {
       const response = await axios.get(`${backendUrl}/api/product/list`)
@@ -29,10 +26,10 @@ function Provider({ children }) {
     }
   }
 
+  // Fetch product dataset once on application initialization
   useEffect(() => {
     getProductsData()
   }, [])
-  */
 
   // --- 3. Cart Functionality ---
   let addtocart = (id, size) => {
@@ -91,13 +88,14 @@ function Provider({ children }) {
     setCardItem(cartData);
   }
 
-  // --- 4. Total Price Calculation ---
+  // --- 4. Fixed Total Price Calculation ---
   const totalPrice = () => {
     let totalAmount = 0;
     for (const itemId in cardItem) {
+      // Find the corresponding item information dynamically within your fetched list state
       const itemInfo = products.find((product) => product._id === itemId);
       
-      if (!itemInfo) continue;
+      if (!itemInfo) continue; // Skip item loop safely if the metadata isn't ready or found yet
 
       for (const size in cardItem[itemId]) {
         const qty = cardItem[itemId][size];
@@ -109,9 +107,9 @@ function Provider({ children }) {
     return totalAmount;
   }
 
+  // Consolidating items inside values object container
   const obj = {
     products, 
-    setProducts,
     name, 
     addtocart, 
     gettotalCart, 
@@ -119,7 +117,7 @@ function Provider({ children }) {
     updateQuantity, 
     removeItem, 
     updateSize,
-    totalPrice,
+    totalPrice, // Exposed so your checkout page can display costs automatically
     backendUrl
   }
 
