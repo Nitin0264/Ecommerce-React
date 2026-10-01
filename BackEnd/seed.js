@@ -1,10 +1,9 @@
 import mongoose from 'mongoose'
-import productModel from './models/productModel.js' // Adjust path if needed
-import connectDB from './config/mongodb.js'        // Adjust path if needed
+import productModel from './models/productModel.js'
+import connectDB from './config/mongodb.js'
 import 'dotenv/config'
 
-// Paste your products array from assets.js here
-export const products = [
+ const products = [
     {
         _id: "aaaaa",
         name: "Women Round Neck Cotton Top",
@@ -635,10 +634,10 @@ const seedProducts = async () => {
   try {
     await connectDB();
     
-    // Optional: Clear existing database products before seeding
+    // Clear existing products in the database before seeding (uncomment if you want a clean slate)
     // await productModel.deleteMany({});
 
-    await productModel.insertMany(sampleProducts);
+    await productModel.insertMany(products);
     console.log("✅ All products added successfully in bulk!");
     process.exit(0);
   } catch (error) {
